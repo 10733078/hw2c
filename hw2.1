@@ -1,0 +1,71 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+#define MAX_SIZE 100
+
+struct Stack {
+    int items[MAX_SIZE][2];
+    int top;
+};
+
+void initStack(struct Stack *stack) {
+    stack->top = -1;
+}
+
+bool isEmpty(struct Stack *stack) {
+    return (stack->top == -1);
+}
+
+void push(struct Stack *stack, int x, int y) {
+    stack->top++;
+    stack->items[stack->top][0] = x;
+    stack->items[stack->top][1] = y;
+}
+
+void pop(struct Stack *stack) {
+    if (!isEmpty(stack)) {
+        stack->top--;
+    }
+}
+
+bool isValidMove(char maze[MAX_SIZE][MAX_SIZE], int rows, int cols, int x, int y) {
+    return (x >= 0 && x < rows && y >= 0 && y < cols && maze[x][y] != '1');
+}
+
+void playMazeGame(char maze[MAX_SIZE][MAX_SIZE], int rows, int cols, char *moves) {
+    int player_x, player_y, obstacle_x, obstacle_y;
+    int obstacle_direction = 1;
+    struct Stack stack;
+
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            if (maze[i][j] == 'P') {
+                player_x = i;
+                player_y = j;
+            }
+            if (maze[i][j] == 'X') {
+                obstacle_x = i;
+                obstacle_y = j;
+            }
+        }
+    }
+
+    initStack(&stack);
+    int movesLen = 0;
+
+    while (moves[movesLen] != '\0') {
+        char move = moves[movesLen];
+        int dx = 0, dy = 0;
+
+        switch (move) {
+            case 'W':
+            case 'w':
+                dx = -1;
+                break;
+            case 'S':
+            case 's':
+                dx = 1;
+                break;
+            case 'A':
+            case 'a':
+                dy = -
